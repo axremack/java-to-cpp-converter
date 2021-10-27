@@ -6,13 +6,13 @@ import java.io.UnsupportedEncodingException;
 
 public class Writer {
     private Fetcher fetcher;
-    private String finalFileName;
+    private String className;
     private StringBuilder finalFileContent;
 
     // Constructor
-    public Writer(Fetcher fetcher, String finalFileName, StringBuilder finalFileContent) {
+    public Writer(Fetcher fetcher, String className, StringBuilder finalFileContent) {
         this.fetcher = fetcher;
-        this.finalFileName = finalFileName;
+        this.className = className;
         this.finalFileContent = finalFileContent;
     }
 
@@ -21,31 +21,44 @@ public class Writer {
 
     public void setFetcher(Fetcher fetcher) { this.fetcher = fetcher; }
 
-    public String getFinalFileName() { return finalFileName; }
+    public String getClassName() { return className; }
 
-    public void setFinalFileName(String finalFileName) { this.finalFileName = finalFileName; }
+    public void setClassName(String className) { this.className = className; }
 
     public StringBuilder getFinalFileContent() { return finalFileContent; }
 
     public void setFinalFileContent(StringBuilder finalFileContent) { this.finalFileContent = finalFileContent; }
 
     // Methods
-    public void writeGuardians() {
-        String guardianName = finalFileName.toUpperCase() + "_" + "HPP";
-        finalFileContent.append("#ifndef " + guardianName + "\n")
-                        .append("#define " + guardianName + "\n")
-                        .append("#endif\n");
+    public void writeClass() {
+        // Signature de classe {
+        finalFileContent.append("class " + className + " {\n")
+        // private :
+        // Méthodes et attributs privés
+
+
+        // public:
+        // Méthodes et attributs publics
+
+
+        //append };
+                .append("};\n")
+                .append("\n");
     }
 
-
-
-
     public void writeFile() throws FileNotFoundException, UnsupportedEncodingException {
-        String completeFileName = finalFileName + ".hpp";
+        String completeFileName = className + ".hpp";
         PrintWriter writer = new PrintWriter(completeFileName, "UTF-8");
 
-        // Writing guardians, dependancies and structure
-        writeGuardians();
+        // Writing guardians, dependancies and class informations
+        String guardianName = className.toUpperCase() + "_" + "HPP";
+        finalFileContent.append("#ifndef " + guardianName + "\n")
+                        .append("#define " + guardianName + "\n")
+                        .append("\n");
+
+        writeClass();
+
+        finalFileContent.append("#endif\n");
 
         System.out.print(finalFileContent);
         System.out.println();
