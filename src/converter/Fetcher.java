@@ -16,6 +16,9 @@ public class Fetcher {
     private Method[] methods;
 
     private List<Map<String,String>> allFieldsInfos;
+    private List<Map<String,String>> allConstructorsInfos;
+    private List<Map<String,String>> allMethodsInfos;
+
     private List<String> dependancies;
 
     // Constructor
@@ -25,32 +28,34 @@ public class Fetcher {
         this.methods = classToConvert.getDeclaredMethods();
         this.constructors = classToConvert.getDeclaredConstructors();
         this.allFieldsInfos = new ArrayList<>();
+        this.allConstructorsInfos = new ArrayList<>();
+        this.allMethodsInfos = new ArrayList<>();
         this.dependancies = new ArrayList<>();
     }
 
     // Getters and setters
     public Class getClassToConvert() { return classToConvert; }
-
     public void setClassToConvert(Class classToConvert) { this.classToConvert = classToConvert; }
 
     public Field[] getFields() { return fields; }
-
     public void setFields(Field[] fields) { this.fields = fields; }
 
     public Constructor[] getConstructors() { return constructors; }
-
     public void setConstructors(Constructor[] constructors) { this.constructors = constructors; }
 
     public Method[] getMethods() { return methods; }
-
     public void setMethods(Method[] methods) { this.methods = methods; }
 
     public List<Map<String,String>> getAllFieldsInfos() { return allFieldsInfos; }
-
     public void setAllFieldsInfos(List<Map<String,String>> fieldInfos) { this.allFieldsInfos = fieldInfos; }
 
-    public List<String> getDependancies() { return dependancies; }
+    public List<Map<String, String>> getAllConstructorsInfos() { return allConstructorsInfos; }
+    public void setAllConstructorsInfos(List<Map<String, String>> allConstructorsInfos) { this.allConstructorsInfos = allConstructorsInfos; }
 
+    public List<Map<String, String>> getAllMethodsInfos() { return allMethodsInfos; }
+    public void setAllMethodsInfos(List<Map<String, String>> allMethodsInfos) { this.allMethodsInfos = allMethodsInfos; }
+
+    public List<String> getDependancies() { return dependancies; }
     public void setDependancies(List<String> dependancies) { this.dependancies = dependancies; }
 
     // Methods
@@ -64,10 +69,29 @@ public class Fetcher {
         else if (type.equals("java.lang.Integer")) {
             convertedType = "int";
         }
+        else if (type.equals("java.lang.Double")) {
+            convertedType = "double";
+        }
+        else if (type.equals("java.lang.Float")) {
+            convertedType = "float";
+        }
 
         return convertedType;
     }
 
+    public String getEquivalenceOfArray(String types) {
+        StringBuilder sb = new StringBuilder();
+        String[] listTypes = types.split(",");
+
+        for (int i = 0; i < listTypes.length - 1; i++) {
+            String convertedType = getCPPEquivalence(listTypes[i]);
+            sb.append(convertedType + ", ");
+        }
+        String convertedType = getCPPEquivalence(listTypes[listTypes.length - 1]);
+        sb.append(convertedType);
+
+        return sb.toString();
+    }
 
     public void fetchFields(){
         for (Field field : fields) {
@@ -89,16 +113,21 @@ public class Fetcher {
 
     public void fetchConstructors(){
         for (Constructor constructor : constructors) {
-            System.out.print("Constructors : ");
             String[] constructorString = constructor.toGenericString().split(" ");
 
             String access = constructorString[0];
-            String name_and_args = constructorString[1];
+            String[] name_and_args = constructorString[1].split("[(]");
+            String name = name_and_args[0];
+            String args = name_and_args[1].split("[)]")[0];
 
-            System.out.print("access - " + access);
-            System.out.println(" // name and args - " + name_and_args);
+            Map<String, String> constructorInfos = new HashMap<String, String>(){{
+                put("access", access);
+                put("name", name);
+                put("arguments", getEquivalenceOfArray(args));
+            }};
+
+            allConstructorsInfos.add(constructorInfos);
         }
-        System.out.println();
     }
 
     public void fetchMethods(){
