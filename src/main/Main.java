@@ -2,6 +2,7 @@ package main;
 
 import example.Example;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -32,6 +33,16 @@ public class Main {
             System.out.print("access - " + methodString[0]);
             System.out.print(" // return type - " + methodString[1]);
             System.out.println(" // name and args - " + methodString[2]);
+        }
+        System.out.println();
+
+        // Getting methods signatures
+        Constructor[] classConstructors = c.getDeclaredConstructors();
+        for (Constructor constructor : classConstructors) {
+            System.out.print("Method : ");
+            String[] constructorString = constructor.toGenericString().split(" ");
+            System.out.print("access - " + constructorString[0]);
+            System.out.println(" // name and args - " + constructorString[1]);
         }
         System.out.println();
 
