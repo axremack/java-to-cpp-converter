@@ -30,14 +30,25 @@ public class Writer {
     public void setFinalFileContent(StringBuilder finalFileContent) { this.finalFileContent = finalFileContent; }
 
     // Methods
+    public void writeGuardians() {
+        String guardianName = finalFileName.toUpperCase() + "_" + "HPP";
+        finalFileContent.append("#ifndef " + guardianName + "\n")
+                        .append("#define " + guardianName + "\n")
+                        .append("#endif\n");
+    }
+
+
+
+
     public void writeFile() throws FileNotFoundException, UnsupportedEncodingException {
         String completeFileName = finalFileName + ".hpp";
         PrintWriter writer = new PrintWriter(completeFileName, "UTF-8");
 
         // Writing guardians, dependancies and structure
-
+        writeGuardians();
 
         System.out.print(finalFileContent);
+        System.out.println();
 
         writer.print(finalFileContent);
         writer.close();
