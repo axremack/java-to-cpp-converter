@@ -3,6 +3,8 @@ package converter;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Map;
 
 public class Writer {
     private Fetcher fetcher;
@@ -32,17 +34,25 @@ public class Writer {
     // Methods
     public void writeClass() {
         // Signature de classe {
-        finalFileContent.append("class " + className + " {\n")
+        finalFileContent.append("class " + className + " {\n");
         // private :
-        // Méthodes et attributs privés
+        //finalFileContent.append("private :\n");
 
+        // Méthodes et attributs privés
+        fetcher.fetchFields();
+        List<Map<String,String>> listFieldInfos = fetcher.getAllFieldsInfos();
+
+        for (Map<String,String> fieldInfos : listFieldInfos) {
+            finalFileContent.append("\t" + fieldInfos.get("type") + " " + fieldInfos.get("name") + ";")
+                            .append("\n");
+        }
 
         // public:
         // Méthodes et attributs publics
 
 
         //append };
-                .append("};\n")
+        finalFileContent.append("};\n")
                 .append("\n");
     }
 
