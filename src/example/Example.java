@@ -60,7 +60,7 @@ public class Example {
         this.stats = stats;
     }
 
-    public void Hello(int random){
+    private void Hello(int random){
         System.out.println("Hello");
     }
 
