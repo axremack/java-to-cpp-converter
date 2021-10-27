@@ -1,5 +1,9 @@
 package converter;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+
 public class Writer {
     private Fetcher fetcher;
     private String finalFileName;
@@ -26,7 +30,20 @@ public class Writer {
     public void setFinalFileContent(StringBuilder finalFileContent) { this.finalFileContent = finalFileContent; }
 
     // Methods
+    public void writeFile() throws FileNotFoundException, UnsupportedEncodingException {
+        String completeFileName = finalFileName + ".hpp";
+        PrintWriter writer = new PrintWriter(completeFileName, "UTF-8");
 
+        // Writing guardians, dependancies and structure
+
+
+        System.out.print(finalFileContent);
+
+        writer.print(finalFileContent);
+        writer.close();
+
+        System.out.println("File " + completeFileName + " successfully created");
+    }
 
 
 
