@@ -32,6 +32,12 @@ public class Writer {
     public void setFinalFileContent(StringBuilder finalFileContent) { this.finalFileContent = finalFileContent; }
 
     // Methods
+    public void fetchClassInfos() {
+        fetcher.fetchFields();
+        fetcher.fetchConstructors();
+        fetcher.fetchMethods();
+    }
+
     public void writeClass() {
         // Signature de classe {
         finalFileContent.append("class " + className + " {\n");
@@ -39,7 +45,6 @@ public class Writer {
         //finalFileContent.append("private :\n");
 
         // Méthodes et attributs privés
-        fetcher.fetchFields();
         List<Map<String,String>> listFieldInfos = fetcher.getAllFieldsInfos();
 
         for (Map<String,String> fieldInfos : listFieldInfos) {
@@ -56,7 +61,19 @@ public class Writer {
                 .append("\n");
     }
 
+    public void writeDependancies() {
+        List<String> dependancies = fetcher.getDependancies();
+
+        for(String dependancy : dependancies) {
+            finalFileContent.append(dependancy + "\n");
+        }
+
+        finalFileContent.append("\n");
+    }
+
     public void writeFile() throws FileNotFoundException, UnsupportedEncodingException {
+        fetchClassInfos();
+
         String completeFileName = className + ".hpp";
         PrintWriter writer = new PrintWriter(completeFileName, "UTF-8");
 
@@ -65,6 +82,8 @@ public class Writer {
         finalFileContent.append("#ifndef " + guardianName + "\n")
                         .append("#define " + guardianName + "\n")
                         .append("\n");
+
+        writeDependancies();
 
         writeClass();
 
