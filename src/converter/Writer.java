@@ -44,17 +44,20 @@ public class Writer {
         // private :
         //finalFileContent.append("private :\n");
 
-        // Méthodes et attributs privés
         List<Map<String,String>> listFieldInfos = fetcher.getAllFieldsInfos();
-
         for (Map<String,String> fieldInfos : listFieldInfos) {
             finalFileContent.append("\t" + fieldInfos.get("type") + " " + fieldInfos.get("name") + ";")
                             .append("\n");
         }
 
-        // public:
-        // Méthodes et attributs publics
+        List<Map<String,String>> listConstructorInfos = fetcher.getAllConstructorsInfos();
+        for (Map<String,String> constructorInfos : listConstructorInfos) {
+            finalFileContent.append("\t" + constructorInfos.get("name") + "(" + constructorInfos.get("arguments") + ");")
+                    .append("\n");
+        }
 
+        // public:
+        //finalFileContent.append("public :\n");
 
         //append };
         finalFileContent.append("};\n")
@@ -67,7 +70,6 @@ public class Writer {
         for(String dependancy : dependancies) {
             finalFileContent.append(dependancy + "\n");
         }
-
         finalFileContent.append("\n");
     }
 
