@@ -1,6 +1,6 @@
 package main;
 
-import example.Example;
+import converter.Converter;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -15,18 +15,11 @@ public class Main {
         System.out.println(c.getName());
 
         // Getting attributes infos
-        Field[] classFields = c.getDeclaredFields();
-        for (Field field : classFields) {
-            System.out.print("Field : ");
-            String[] fieldString = field.toGenericString().split(" ");
-            System.out.print("access - " + fieldString[0]);
-            System.out.print(" // type - " + fieldString[1]);
-            System.out.println(" // name - " + fieldString[2]);
-        }
-        System.out.println();
+        Converter converter = new Converter(c);
+        converter.fetchFields();
 
         // Getting methods signatures
-        Method[] classMethods = c.getDeclaredMethods();
+        /*Method[] classMethods = c.getDeclaredMethods();
         for (Method method : classMethods) {
             System.out.print("Method : ");
             String[] methodString = method.toGenericString().split(" ");
@@ -34,18 +27,16 @@ public class Main {
             System.out.print(" // return type - " + methodString[1]);
             System.out.println(" // name and args - " + methodString[2]);
         }
-        System.out.println();
+        System.out.println();*/
 
         // Getting methods signatures
-        Constructor[] classConstructors = c.getDeclaredConstructors();
+        /*Constructor[] classConstructors = c.getDeclaredConstructors();
         for (Constructor constructor : classConstructors) {
             System.out.print("Method : ");
             String[] constructorString = constructor.toGenericString().split(" ");
             System.out.print("access - " + constructorString[0]);
             System.out.println(" // name and args - " + constructorString[1]);
         }
-        System.out.println();
-
-
+        System.out.println();*/
     }
 }
