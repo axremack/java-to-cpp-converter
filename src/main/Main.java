@@ -1,12 +1,6 @@
 package main;
 
-import converter.Converter;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import converter.Fetcher;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -14,10 +8,11 @@ public class Main {
         Class c = Class.forName(class_name);
         System.out.println(c.getName());
 
-        Converter converter = new Converter(c);
-        converter.fetchFields();
-        converter.fetchConstructors();
-        converter.fetchMethods();
+        Fetcher fetcher = new Fetcher(c);
+        fetcher.fetchFields();
+        fetcher.fetchConstructors();
+        fetcher.fetchMethods();
+
 
 
 

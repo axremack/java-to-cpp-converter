@@ -4,7 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class Converter {
+public class Fetcher {
     public Class classToConvert;
 
     private Field[] fields;
@@ -12,7 +12,7 @@ public class Converter {
     private Method[] methods;
 
     // Constructor
-    public Converter(Class classToConvert) {
+    public Fetcher(Class classToConvert) {
         this.classToConvert = classToConvert;
         this.fields = classToConvert.getDeclaredFields();
         this.methods = classToConvert.getDeclaredMethods();
