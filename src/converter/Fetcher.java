@@ -3,13 +3,20 @@ package converter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Fetcher {
-    public Class classToConvert;
+    private Class classToConvert;
 
     private Field[] fields;
     private Constructor[] constructors;
     private Method[] methods;
+
+    private List<Map<String,String>> allFieldsInfos;
+    private List<String> dependancies;
 
     // Constructor
     public Fetcher(Class classToConvert) {
@@ -17,6 +24,8 @@ public class Fetcher {
         this.fields = classToConvert.getDeclaredFields();
         this.methods = classToConvert.getDeclaredMethods();
         this.constructors = classToConvert.getDeclaredConstructors();
+        this.allFieldsInfos = new ArrayList<>();
+        this.dependancies = new ArrayList<>();
     }
 
     // Getters and setters
@@ -36,21 +45,46 @@ public class Fetcher {
 
     public void setMethods(Method[] methods) { this.methods = methods; }
 
+    public List<Map<String,String>> getAllFieldsInfos() { return allFieldsInfos; }
+
+    public void setAllFieldsInfos(List<Map<String,String>> fieldInfos) { this.allFieldsInfos = fieldInfos; }
+
+    public List<String> getDependancies() { return dependancies; }
+
+    public void setDependancies(List<String> dependancies) { this.dependancies = dependancies; }
+
     // Methods
+    public String getCPPEquivalence(String type) {
+        String convertedType = type;
+
+        if(type.equals("java.lang.String")) {
+            dependancies.add("#include <string>");
+            convertedType = "std::string";
+        }
+        else if (type.equals("java.lang.Integer")) {
+            convertedType = "int";
+        }
+
+        return convertedType;
+    }
+
+
     public void fetchFields(){
         for (Field field : fields) {
-            System.out.print("Fields : ");
             String[] fieldString = field.toGenericString().split(" ");
 
             String access = fieldString[0];
             String type = fieldString[1];
             String name = fieldString[2];
 
-            System.out.print("access - " + access);
-            System.out.print(" // type - " + type);
-            System.out.println(" // name - " + name);
+            Map<String, String> fieldInfos = new HashMap<String, String>(){{
+                put("access", access);
+                put("type", getCPPEquivalence(type));
+                put("name", name);
+            }};
+
+            allFieldsInfos.add(fieldInfos);
         }
-        System.out.println();
     }
 
     public void fetchConstructors(){
