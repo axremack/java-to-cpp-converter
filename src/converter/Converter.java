@@ -11,6 +11,7 @@ public class Converter {
     private Constructor[] constructors;
     private Method[] methods;
 
+    // Constructor
     public Converter(Class classToConvert) {
         this.classToConvert = classToConvert;
         this.fields = classToConvert.getDeclaredFields();
@@ -18,6 +19,24 @@ public class Converter {
         this.constructors = classToConvert.getDeclaredConstructors();
     }
 
+    // Getters and setters
+    public Class getClassToConvert() { return classToConvert; }
+
+    public void setClassToConvert(Class classToConvert) { this.classToConvert = classToConvert; }
+
+    public Field[] getFields() { return fields; }
+
+    public void setFields(Field[] fields) { this.fields = fields; }
+
+    public Constructor[] getConstructors() { return constructors; }
+
+    public void setConstructors(Constructor[] constructors) { this.constructors = constructors; }
+
+    public Method[] getMethods() { return methods; }
+
+    public void setMethods(Method[] methods) { this.methods = methods; }
+
+    // Methods
     public void fetchFields(){
         for (Field field : fields) {
             System.out.print("Fields : ");

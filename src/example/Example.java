@@ -13,14 +13,13 @@ public class Example {
     //      - Method with argument
     // ------------------------------------
 
-    // Attributes
     private String name;
     private double grade;
     public Integer age;
     private List<Float> stats;
     public static int cpt = 0;
 
-    // Methods
+    // Constuctors
     public Example(String name, double grade, Integer age, List<Float> stats) {
         this.name = name;
         this.grade = grade;
@@ -32,6 +31,7 @@ public class Example {
         this.name = name;
     }
 
+    // Getters and setters
     public String getName() {
         return name;
     }
@@ -60,6 +60,7 @@ public class Example {
         this.stats = stats;
     }
 
+    // Methods
     private void Hello(int random){
         System.out.println("Hello");
     }
