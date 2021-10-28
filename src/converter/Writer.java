@@ -92,7 +92,7 @@ public class Writer {
         finalFileContent.append("\n");
     }
 
-    public void writeFile() throws FileNotFoundException, UnsupportedEncodingException {
+    public void writeFile(Boolean printFileContent) throws FileNotFoundException, UnsupportedEncodingException {
         fetchClassInfos();
 
         String completeFileName = className + ".hpp";
@@ -105,14 +105,17 @@ public class Writer {
                         .append("\n");
 
         writeDependancies();
-
         writeClass();
 
         finalFileContent.append("#endif\n");
 
-        System.out.print(finalFileContent);
-        System.out.println();
+        // Printing file content on stdout if asked to
+        if (printFileContent){
+            System.out.print(finalFileContent);
+            System.out.println();
+        }
 
+        // Filling file
         writer.print(finalFileContent);
         writer.close();
 

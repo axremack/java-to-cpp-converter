@@ -63,7 +63,7 @@ public class Fetcher {
         String convertedType = type;
 
         if(type.equals("java.lang.String")) {
-            dependancies.add("#include <string>");
+            if (!dependancies.contains("#include <string>")) dependancies.add("#include <string>");
             convertedType = "std::string";
         }
         else if (type.equals("java.lang.Integer")) {

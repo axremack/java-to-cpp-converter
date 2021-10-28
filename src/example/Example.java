@@ -3,28 +3,15 @@ package example;
 import java.util.List;
 
 public class Example {
-    // ------------------------------------
-    // Getting as many cases as possible
-    //      - Diverse types
-    //      - Diverse access
-    //      - Static attributes / methods
-    //      - Collection
-    //      - Method with return type
-    //      - Method with argument
-    // ------------------------------------
-
     private String name;
     private double grade;
     public Integer age;
-    //private List<Float> stats;
-    //public static int cpt = 0;
 
     // Constuctors
-    public Example(String name, double grade, Integer age, List<Float> stats) {
+    public Example(String name, double grade, Integer age) {
         this.name = name;
         this.grade = grade;
         this.age = age;
-        //this.stats = stats;
     }
 
     public Example(String name) {
@@ -51,15 +38,6 @@ public class Example {
     public Integer getAge() { return age; }
 
     public void setAge(Integer age) { this.age = age; }
-
-    /*public List<Float> getStats() {
-        return stats;
-    }
-
-    public void setStats(List<Float> stats) {
-        this.stats = stats;
-    }
-    */
 
     // Methods
     private void Hello(int random){
