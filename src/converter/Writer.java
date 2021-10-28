@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class Writer {
     private Fetcher fetcher;
@@ -39,32 +40,45 @@ public class Writer {
     }
 
     public void writeClass() {
-        // Signature de classe {
         finalFileContent.append("class " + className + " {\n");
-        // private :
-        //finalFileContent.append("private :\n");
 
+        // Getting all the class infos
         List<Map<String,String>> listFieldInfos = fetcher.getAllFieldsInfos();
-        for (Map<String,String> fieldInfos : listFieldInfos) {
-            finalFileContent.append("\t" + fieldInfos.get("type") + " " + fieldInfos.get("name") + ";")
-                            .append("\n");
-        }
-
         List<Map<String,String>> listConstructorInfos = fetcher.getAllConstructorsInfos();
-        for (Map<String,String> constructorInfos : listConstructorInfos) {
-            finalFileContent.append("\t" + constructorInfos.get("name") + "(" + constructorInfos.get("arguments") + ");")
-                    .append("\n");
-        }
-
         List<Map<String,String>> listMethodInfos = fetcher.getAllMethodsInfos();
-        for (Map<String,String> methodInfos : listMethodInfos) {
-            finalFileContent.append("\t" + methodInfos.get("return_type") + " " + methodInfos.get("name") + "(" + methodInfos.get("arguments") + ");")
-                    .append("\n");
-        }
-        // public:
-        //finalFileContent.append("public :\n");
 
-        //append };
+        // Private attributes, constuctors or methods
+        finalFileContent.append("\tprivate :\n");
+
+        listFieldInfos.stream()
+                .filter(fieldInfos -> "private".equals(fieldInfos.get("access")))
+                .forEach(fieldInfos -> finalFileContent.append("\t\t" + fieldInfos.get("type") + " " + fieldInfos.get("name") + ";\n"));
+
+        listConstructorInfos.stream()
+                .filter(constructorInfos -> "private".equals(constructorInfos.get("access")))
+                .forEach(constructorInfos -> finalFileContent.append("\t\t" + constructorInfos.get("name") + "(" + constructorInfos.get("arguments") + ");\n"));
+
+        listMethodInfos.stream()
+                .filter(methodInfos -> "private".equals(methodInfos.get("access")))
+                .forEach(methodInfos -> finalFileContent.append("\t\t" + methodInfos.get("return_type") + " " + methodInfos.get("name") + "(" + methodInfos.get("arguments") + ");\n"));
+
+        finalFileContent.append("\n");
+
+        // Public attributes, constuctors or methods
+        finalFileContent.append("\tpublic :\n");
+
+        listFieldInfos.stream()
+                .filter(fieldInfos -> "public".equals(fieldInfos.get("access")))
+                .forEach(fieldInfos -> finalFileContent.append("\t\t" + fieldInfos.get("type") + " " + fieldInfos.get("name") + ";\n"));
+
+        listConstructorInfos.stream()
+                .filter(constructorInfos -> "public".equals(constructorInfos.get("access")))
+                .forEach(constructorInfos -> finalFileContent.append("\t\t" + constructorInfos.get("name") + "(" + constructorInfos.get("arguments") + ");\n"));
+
+        listMethodInfos.stream()
+                .filter(methodInfos -> "public".equals(methodInfos.get("access")))
+                .forEach(methodInfos -> finalFileContent.append("\t\t" + methodInfos.get("return_type") + " " + methodInfos.get("name") + "(" + methodInfos.get("arguments") + ");\n"));
+
         finalFileContent.append("};\n")
                 .append("\n");
     }
