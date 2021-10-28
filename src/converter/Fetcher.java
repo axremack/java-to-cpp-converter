@@ -121,14 +121,11 @@ public class Fetcher {
 
             String access = constructorString[0];
             String[] name_and_args = constructorString[1].split("[(]");
-            String[] nameTemp = name_and_args[0].split("[.]");
-            String name = nameTemp[nameTemp.length - 1];
             String args = (name_and_args[1].length() > 1 ) ? name_and_args[1].split("[)]")[0] : "";
 
 
             Map<String, String> constructorInfos = new HashMap<String, String>(){{
                 put("access", access);
-                put("name", name);
                 put("arguments", getEquivalenceOfList(args));
             }};
 

@@ -56,7 +56,7 @@ public class Writer {
 
         listConstructorInfos.stream()
                 .filter(constructorInfos -> "private".equals(constructorInfos.get("access")))
-                .forEach(constructorInfos -> finalFileContent.append("\t\t" + constructorInfos.get("name") + "(" + constructorInfos.get("arguments") + ");\n"));
+                .forEach(constructorInfos -> finalFileContent.append("\t\t" + className + "(" + constructorInfos.get("arguments") + ");\n"));
 
         listMethodInfos.stream()
                 .filter(methodInfos -> "private".equals(methodInfos.get("access")))
@@ -73,7 +73,7 @@ public class Writer {
 
         listConstructorInfos.stream()
                 .filter(constructorInfos -> "public".equals(constructorInfos.get("access")))
-                .forEach(constructorInfos -> finalFileContent.append("\t\t" + constructorInfos.get("name") + "(" + constructorInfos.get("arguments") + ");\n"));
+                .forEach(constructorInfos -> finalFileContent.append("\t\t" + className + "(" + constructorInfos.get("arguments") + ");\n"));
 
         listMethodInfos.stream()
                 .filter(methodInfos -> "public".equals(methodInfos.get("access")))
