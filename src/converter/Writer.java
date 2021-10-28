@@ -93,7 +93,7 @@ public class Writer {
     }
 
     public void writeFile(Boolean printFileContent) throws FileNotFoundException, UnsupportedEncodingException {
-        fetchClassInfos();
+        fetchClassInfos(); // Initializing the fetcher to contain class informations
 
         String completeFileName = className + ".hpp";
         PrintWriter writer = new PrintWriter(completeFileName, "UTF-8");
@@ -111,15 +111,15 @@ public class Writer {
 
         // Printing file content on stdout if asked to
         if (printFileContent){
-            System.out.print(finalFileContent);
             System.out.println();
+            System.out.println(finalFileContent);
         }
 
         // Filling file
         writer.print(finalFileContent);
         writer.close();
 
-        System.out.println("File " + completeFileName + " successfully created");
+        System.out.println("File " + completeFileName + " successfully created\n");
     }
 
 

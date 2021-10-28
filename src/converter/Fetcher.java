@@ -27,6 +27,7 @@ public class Fetcher {
         this.fields = classToConvert.getDeclaredFields();
         this.methods = classToConvert.getDeclaredMethods();
         this.constructors = classToConvert.getDeclaredConstructors();
+
         this.allFieldsInfos = new ArrayList<>();
         this.allConstructorsInfos = new ArrayList<>();
         this.allMethodsInfos = new ArrayList<>();
@@ -63,7 +64,7 @@ public class Fetcher {
         String convertedType = type;
 
         if(type.equals("java.lang.String")) {
-            if (!dependancies.contains("#include <string>")) dependancies.add("#include <string>");
+            if (!dependancies.contains("#include <string>")) dependancies.add("#include <string>"); // Checking for uniqueness before adding dependancy
             convertedType = "std::string";
         }
         else if (type.equals("java.lang.Integer")) {
@@ -82,14 +83,14 @@ public class Fetcher {
     public String getEquivalenceOfList(String types) {
         StringBuilder sb = new StringBuilder();
 
-        if (!types.isEmpty()) {
+        if (!types.isEmpty()) { // If the string has at least one type
             String[] listTypes = types.split(",");
 
             for (int i = 0; i < listTypes.length - 1; i++) {
                 String convertedType = getCPPEquivalence(listTypes[i]);
                 sb.append(convertedType + ", ");
             }
-            String convertedType = getCPPEquivalence(listTypes[listTypes.length - 1]);
+            String convertedType = getCPPEquivalence(listTypes[listTypes.length - 1]); // Do the last type without comma
             sb.append(convertedType);
         }
 
@@ -100,11 +101,13 @@ public class Fetcher {
         for (Field field : fields) {
             String[] fieldString = field.toGenericString().split(" ");
 
+            // Parsing informations
             String access = fieldString[0];
             String type = fieldString[1];
             String[] nameTemp = fieldString[2].split("[.]");
             String name = nameTemp[nameTemp.length - 1];
 
+            // Adding it to a global list
             Map<String, String> fieldInfos = new HashMap<String, String>(){{
                 put("access", access);
                 put("type", getCPPEquivalence(type));
@@ -119,11 +122,12 @@ public class Fetcher {
         for (Constructor constructor : constructors) {
             String[] constructorString = constructor.toGenericString().split(" ");
 
+            // Parsing informations
             String access = constructorString[0];
             String[] name_and_args = constructorString[1].split("[(]");
             String args = (name_and_args[1].length() > 1 ) ? name_and_args[1].split("[)]")[0] : "";
 
-
+            // Adding it to a global list
             Map<String, String> constructorInfos = new HashMap<String, String>(){{
                 put("access", access);
                 put("arguments", getEquivalenceOfList(args));
@@ -137,6 +141,7 @@ public class Fetcher {
         for (Method method : methods) {
             String[] methodString = method.toGenericString().split(" ");
 
+            // Parsing informations
             String access = methodString[0];
             String return_type = methodString[1];
             String[] name_and_args = methodString[2].split("[(]");
@@ -144,6 +149,7 @@ public class Fetcher {
             String name = nameTemp[nameTemp.length - 1];
             String args = (name_and_args[1].length() > 1 ) ? name_and_args[1].split("[)]")[0] : "";
 
+            // Adding it to a global list
             Map<String, String> methodInfos = new HashMap<String, String>(){{
                 put("access", access);
                 put("return_type", getCPPEquivalence(return_type));
@@ -154,6 +160,4 @@ public class Fetcher {
             allMethodsInfos.add(methodInfos);
         }
     }
-
-
 }
