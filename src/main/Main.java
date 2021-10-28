@@ -9,15 +9,18 @@ public class Main {
         String fileToCreate;
         Boolean printFileContent = false;
 
-        if (args.length > 3){
+        if (args.length > 3 || args.length == 0){
             System.err.println("Usage : main.java Class.java [Class.cpp] [--stdout]");
             throw new IllegalArgumentException();
         }
         else if (args.length == 3){
-            fileToCreate = args[1];
             if (args[2].equals("--stdout")){
                 printFileContent = true;
+            } else {
+                System.err.println("Usage : main.java Class.java [Class.cpp] [--stdout]");
+                throw new IllegalArgumentException();
             }
+            fileToCreate = args[1];
         }
         else if (args.length == 2){
             fileToCreate = args[1];

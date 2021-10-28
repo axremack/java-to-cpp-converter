@@ -102,7 +102,8 @@ public class Fetcher {
 
             String access = fieldString[0];
             String type = fieldString[1];
-            String name = fieldString[2];
+            String[] nameTemp = fieldString[2].split("[.]");
+            String name = nameTemp[nameTemp.length - 1];
 
             Map<String, String> fieldInfos = new HashMap<String, String>(){{
                 put("access", access);
@@ -120,7 +121,8 @@ public class Fetcher {
 
             String access = constructorString[0];
             String[] name_and_args = constructorString[1].split("[(]");
-            String name = name_and_args[0];
+            String[] nameTemp = name_and_args[0].split("[.]");
+            String name = nameTemp[nameTemp.length - 1];
             String args = (name_and_args[1].length() > 1 ) ? name_and_args[1].split("[)]")[0] : "";
 
 
@@ -141,7 +143,8 @@ public class Fetcher {
             String access = methodString[0];
             String return_type = methodString[1];
             String[] name_and_args = methodString[2].split("[(]");
-            String name = name_and_args[0];
+            String[] nameTemp = name_and_args[0].split("[.]");
+            String name = nameTemp[nameTemp.length - 1];
             String args = (name_and_args[1].length() > 1 ) ? name_and_args[1].split("[)]")[0] : "";
 
             Map<String, String> methodInfos = new HashMap<String, String>(){{
