@@ -56,6 +56,11 @@ public class Writer {
                     .append("\n");
         }
 
+        List<Map<String,String>> listMethodInfos = fetcher.getAllMethodsInfos();
+        for (Map<String,String> methodInfos : listMethodInfos) {
+            finalFileContent.append("\t" + methodInfos.get("return_type") + " " + methodInfos.get("name") + "(" + methodInfos.get("arguments") + ");")
+                    .append("\n");
+        }
         // public:
         //finalFileContent.append("public :\n");
 

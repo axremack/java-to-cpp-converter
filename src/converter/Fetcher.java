@@ -79,16 +79,19 @@ public class Fetcher {
         return convertedType;
     }
 
-    public String getEquivalenceOfArray(String types) {
+    public String getEquivalenceOfList(String types) {
         StringBuilder sb = new StringBuilder();
-        String[] listTypes = types.split(",");
 
-        for (int i = 0; i < listTypes.length - 1; i++) {
-            String convertedType = getCPPEquivalence(listTypes[i]);
-            sb.append(convertedType + ", ");
+        if (!types.isEmpty()) {
+            String[] listTypes = types.split(",");
+
+            for (int i = 0; i < listTypes.length - 1; i++) {
+                String convertedType = getCPPEquivalence(listTypes[i]);
+                sb.append(convertedType + ", ");
+            }
+            String convertedType = getCPPEquivalence(listTypes[listTypes.length - 1]);
+            sb.append(convertedType);
         }
-        String convertedType = getCPPEquivalence(listTypes[listTypes.length - 1]);
-        sb.append(convertedType);
 
         return sb.toString();
     }
@@ -118,12 +121,13 @@ public class Fetcher {
             String access = constructorString[0];
             String[] name_and_args = constructorString[1].split("[(]");
             String name = name_and_args[0];
-            String args = name_and_args[1].split("[)]")[0];
+            String args = (name_and_args[1].length() > 1 ) ? name_and_args[1].split("[)]")[0] : "";
+
 
             Map<String, String> constructorInfos = new HashMap<String, String>(){{
                 put("access", access);
                 put("name", name);
-                put("arguments", getEquivalenceOfArray(args));
+                put("arguments", getEquivalenceOfList(args));
             }};
 
             allConstructorsInfos.add(constructorInfos);
@@ -132,18 +136,23 @@ public class Fetcher {
 
     public void fetchMethods(){
         for (Method method : methods) {
-            System.out.print("Method : ");
             String[] methodString = method.toGenericString().split(" ");
 
             String access = methodString[0];
             String return_type = methodString[1];
-            String name_and_args = methodString[2];
+            String[] name_and_args = methodString[2].split("[(]");
+            String name = name_and_args[0];
+            String args = (name_and_args[1].length() > 1 ) ? name_and_args[1].split("[)]")[0] : "";
 
-            System.out.print("access - " + access);
-            System.out.print(" // return type - " + return_type);
-            System.out.println(" // name and args - " + name_and_args);
+            Map<String, String> methodInfos = new HashMap<String, String>(){{
+                put("access", access);
+                put("return_type", getCPPEquivalence(return_type));
+                put("name", name);
+                put("arguments", getEquivalenceOfList(args));
+            }};
+
+            allMethodsInfos.add(methodInfos);
         }
-        System.out.println();
     }
 
 
